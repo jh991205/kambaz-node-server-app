@@ -114,7 +114,6 @@ export default function UserRoutes(app) {
     const status = await enrollmentsDao.unenrollUserFromCourse(uid, cid);
     res.send(status);
   };
-
   app.post("/api/users/:uid/courses/:cid", enrollUserInCourse);
   app.delete("/api/users/:uid/courses/:cid", unenrollUserFromCourse);
   app.post("/api/users/current/courses", createCourse);
@@ -128,4 +127,16 @@ export default function UserRoutes(app) {
   app.post("/api/users/signin", signin);
   app.post("/api/users/signout", signout);
   app.post("/api/users/profile", profile);
+
+  app.delete("/api/users/course/:cid", async (req, res) => {
+    const { cid } = req.params;
+    try {
+      const result = await enrollmentsDao.deleteAllEnrollmentsForCourse(cid);
+      res.json({ deletedCount: result.deletedCount });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ message: "Failed to delete enrollments", error: err });
+    }
+  });
 }
