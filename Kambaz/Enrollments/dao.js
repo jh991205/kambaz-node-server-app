@@ -17,3 +17,6 @@ export function unenrollUserFromCourse(user, course) {
 export function deleteAllEnrollmentsForCourse(courseId) {
   return model.deleteMany({ course: courseId });
 }
+export function deleteAllCoursesForAnID(userId) {
+  return model.deleteMany({ user: userId });
+}
